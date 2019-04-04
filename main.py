@@ -8,6 +8,12 @@ def quicksortAsc (list : list) :
         else :
             return list
     else :
+        same = True
+        for num in list[1:] :
+            same = same and (list[0] == num)
+        if same :
+            return list
+
         import random
         print("seed = %s" % int(list[0]))
         random.seed(list[0])
@@ -20,6 +26,7 @@ def quicksortAsc (list : list) :
         #    print("current list : ", end='')
         #    print(list)
             if (list[idxP] == list[idxQ]) :
+                print("list[%d], list[%d] : %d, %d" % (idxP, idxQ, list[idxP], list[idxQ]))
                 # get new pivot
                 print("seed = %s" % int(list[0]))
                 random.seed(length)
@@ -28,8 +35,8 @@ def quicksortAsc (list : list) :
                 # reset p and q
                 idxP, idxQ = 0, length - 1
             else :
-                if (list[idxP] > pivot) :
-                    if (list[idxQ] <= pivot) :
+                if (list[idxP] >= pivot) and idxP < idxQ:
+                    if (list[idxQ] <= pivot) and  idxP > idxQ:
                         temp = list[idxP]
                         list[idxP] = list[idxQ]
                         list[idxQ] = temp
@@ -45,10 +52,11 @@ def quicksortAsc (list : list) :
                             break
 
 
-        left_list = quicksortAsc(list[0:idxPivot])
-        right_list = quicksortAsc(list[idxPivot:length])
+        #idxPivot = list.index(pivot)
+        left_list = quicksortAsc(list[0:idxPivot+1])
         print("left list  : %s" % str(left_list))
-        print("left list  : %s" % str(left_list))
+        right_list = quicksortAsc(list[idxPivot+1:length])
+        print("right list  : %s" % str(right_list))
         return (left_list + right_list)
 
 
@@ -57,7 +65,7 @@ def quicksortAsc (list : list) :
 
 
 if __name__ == '__main__' :
-    list = [1,2,3,4,5]
+    list = [1,2,3,4,5,6]
     list.sort(reverse=True)
     x = quicksortAsc(list)
     print(x)
