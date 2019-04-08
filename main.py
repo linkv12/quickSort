@@ -1,71 +1,78 @@
-def quicksortAsc (list : list) :
-    print("current list : %s" % (str(list)))
-    if len(list) == 1 or len(list) == 0:
-        return list
-    elif len(list) == 2 :
-        if (list[1] < list[0]) :
-            return ([list[1], list[0]])
+#import workerpool
+import random
+
+def quick_sort_ascending (arr : list) :
+
+    # pivot is last element
+    if len(arr) == 1 or len(arr) == 0 :
+        return arr
+    elif len(arr) == 2 :
+        if arr[0] > arr[1] :
+            return [arr[1],arr[0]]
         else :
-            return list
+            return arr
     else :
-        same = True
-        for num in list[1:] :
-            same = same and (list[0] == num)
-        if same :
-            return list
+        pivot = arr[0]
+        p = 0
+        q = len(arr) - 1
+        #print("p, q : %d, %d" % (p, q))
 
-        import random
-        print("seed = %s" % int(list[0]))
-        random.seed(list[0])
-        length = len(list)
-        idxPivot = random.randint(0,length-1)
-        #print(idxPivot)
-        pivot = list[idxPivot]
-        idxP, idxQ = 0, length - 1
-        while (idxP != idxQ) :
-        #    print("current list : ", end='')
-        #    print(list)
-            if (list[idxP] == list[idxQ]) :
-                print("list[%d], list[%d] : %d, %d" % (idxP, idxQ, list[idxP], list[idxQ]))
-                # get new pivot
-                print("seed = %s" % int(list[0]))
-                random.seed(length)
-                idxPivot = random.randint(0, length - 1)
-                pivot = list[idxPivot]
-                # reset p and q
-                idxP, idxQ = 0, length - 1
-            else :
-                if (list[idxP] >= pivot) and idxP < idxQ:
-                    if (list[idxQ] <= pivot) and  idxP > idxQ:
-                        temp = list[idxP]
-                        list[idxP] = list[idxQ]
-                        list[idxQ] = temp
-                        idxQ = idxQ - 1
-                        idxP = idxP + 1
-                    elif (list[idxQ] > pivot) :
-                        idxQ = idxQ - 1
-                        if ((idxP == idxQ)) :
-                            break
-                elif (list[idxP] < pivot) :
-                        idxP = idxP + 1
-                        if (idxP == idxQ) :
-                            break
+  #      print("starting pivot for this iteration : %d" % pivot)
+
+        while p != q:
+            if arr[p] == arr[q] :
+                random.seed(420)
+                idxPvt = random.randint(0,arr.__len__())
+                #pivot = arr[int(len(arr)/2)]
+                pivot = arr[idxPvt]
+                p = 0
+                q = len(arr) - 1
 
 
-        #idxPivot = list.index(pivot)
-        left_list = quicksortAsc(list[0:idxPivot+1])
-        print("left list  : %s" % str(left_list))
-        right_list = quicksortAsc(list[idxPivot+1:length])
-        print("right list  : %s" % str(right_list))
-        return (left_list + right_list)
+            while arr[p] < pivot and p < q:
+                p = p + 1
+
+            # 1 >= 1 and 6 > 1 === true and true == true
+            while arr[q] >= pivot and q > p:
+                if arr[q] >= pivot and arr[q] <= pivot :
+                    arr[p], arr[q] = arr[q], arr[p]
+                q = q - 1
 
 
+            # penukaran nilai
+            arr[p], arr[q] = arr[q], arr[p]
 
+
+        #print("pivot for this iteration : %d" % pivot)
+        #print("left arr : %s " % str(arr[:arr.index(pivot)+1]))
+        #print("right arr : %s" % str(arr[arr.index(pivot)+1:]))
+        #print("Current list before split : %s" % str(arr))
+        return ( quick_sort_ascending(arr[:arr.index(pivot)+1]) + quick_sort_ascending(arr[arr.index(pivot)+1:]) )
 
 
 
 if __name__ == '__main__' :
-    list = [1,2,3,4,5,6]
+
+    import datetime
+    import sys
+    lim = sys.getrecursionlimit()
+    # set 40000 as recursion limit
+    sys.setrecursionlimit(15000)
+    random.seed(420)
+    #list = [12,5,6,89,31,2,3,4,5,6]
+    #list = random.sample(range(-10000, 10000), 3929 )
+    list = random.sample(range(-10000, 10000), 100)
+    temp = list
+    #print(list)
+    # buat worst case
     list.sort(reverse=True)
-    x = quicksortAsc(list)
-    print(x)
+
+    start_time = datetime.datetime.now()
+    x = quick_sort_ascending(list)
+    end_time = datetime.datetime.now()
+
+
+    print("Awal sorting  : %s" % str(temp))
+    print("Hasil sorting : " + str(x)+'\n')
+    print("Elapsed time  : %s" % str(end_time-start_time))
+    sys.setrecursionlimit(lim)
