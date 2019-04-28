@@ -2,7 +2,6 @@
 import random
 
 def quick_sort_ascending (arr : list) :
-
     # pivot is last element
     if len(arr) == 1 or len(arr) == 0 :
         return arr
@@ -15,42 +14,20 @@ def quick_sort_ascending (arr : list) :
         pivot = arr[0]
         p = 0
         q = len(arr) - 1
-        #print("p, q : %d, %d" % (p, q))
-
-  #      print("starting pivot for this iteration : %d" % pivot)
-
         while p != q:
             if arr[p] == arr[q] :
-                random.seed(420)
-                idxPvt = random.randint(0,arr.__len__())
-                #pivot = arr[int(len(arr)/2)]
-                pivot = arr[idxPvt]
-                p = 0
-                q = len(arr) - 1
-
-
+                pivot = arr[random.randint(0,arr.__len__())]
+                p, q = 0, len(arr) - 1
             while arr[p] < pivot and p < q:
                 p = p + 1
-
             # 1 >= 1 and 6 > 1 === true and true == true
             while arr[q] >= pivot and q > p:
                 if arr[q] >= pivot and arr[q] <= pivot :
                     arr[p], arr[q] = arr[q], arr[p]
                 q = q - 1
-
-
             # penukaran nilai
             arr[p], arr[q] = arr[q], arr[p]
-
-
-        #print("pivot for this iteration : %d" % pivot)
-        #print("left arr : %s " % str(arr[:arr.index(pivot)+1]))
-        #print("right arr : %s" % str(arr[arr.index(pivot)+1:]))
-        #print("Current list before split : %s" % str(arr))
-        left = quick_sort_ascending(arr[:arr.index(pivot)+1])
-        right = quick_sort_ascending(arr[arr.index(pivot)+1:])
-        #return ( quick_sort_ascending(arr[:arr.index(pivot)+1]) + quick_sort_ascending(arr[arr.index(pivot)+1:]) )
-        return (left + right)
+        return (quick_sort_ascending(arr[:arr.index(pivot)+1]) + quick_sort_ascending(arr[arr.index(pivot)+1:]))
 
 
 def insertionSort_ascending(arr):
@@ -76,31 +53,37 @@ if __name__ == '__main__' :
     lim = sys.getrecursionlimit()
     # set 40000 as recursion limit
     sys.setrecursionlimit(15000)
-    random.seed(299)
+    #random.seed(299)
     #list = [12,5,6,89,31,2,3,4,5,6]
     #list = random.sample(range(-10000, 10000), 3929 )
-    list = random.sample(range(-10000, 10000), 2000)
-
+    listo = random.sample(range(-1, 100), 15)
+    #listo = [98, 91, 88, 86, 85, 78, 75, 74, 65, 57, 45, 41, 38, 23, 0]
+    #print ('raw : %s' % listo)
     #print(list)
     # buat worst case
-    list.sort(reverse=True)
-    print("raw list %s" % str(list))
-    temp_2 = list
+    listo.sort(reverse=True)
+    print('raw : %s' % listo)
+    listp = listo[:] #[98, 91, 88, 86, 85, 78, 75, 74, 65, 57, 45, 41, 38, 23, 0]
+    #listx = [98, 91, 88, 86, 85, 78, 75, 74, 65, 57, 45, 41, 38, 23, 0]
+    #listy = [98, 91, 88, 86, 85, 78, 75, 74, 65, 57, 45, 41, 38, 23, 0]
+
     start_time = datetime.datetime.now()
-    x = quick_sort_ascending(list)
+    x = quick_sort_ascending(listo)
     end_time = datetime.datetime.now()
 
-    start_time_2 = datetime.datetime.now()
-    y = insertionSort_ascending(temp_2)
-    end_time_2 = datetime.datetime.now()
+    #start_time_2 = datetime.datetime.now()
+    #y = insertionSort_ascending(listx)
+    #end_time_2 = datetime.datetime.now()
 
     print("Quick Sort")
+    print("List awal \t\t: ", str(listp))
     print("Hasil sorting : " + str(x)+'\n')
     print("Elapsed time  : %s" % str(end_time-start_time))
 
-    print("\nInsertion sort")
-    print("Hasil sorting : " + str(y)+'\n')
-    print("Elapsed time  : %s" % str(end_time_2-start_time_2))
+    #print("\nInsertion sort")
+    #print("List awal \t\t: ", str(listy))
+    #print("Hasil sorting : " + str(y)+'\n')
+    #print("Elapsed time  : %s" % str(end_time_2-start_time_2))
 
 
     sys.setrecursionlimit(lim)
